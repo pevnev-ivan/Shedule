@@ -1,0 +1,14 @@
+.currentTableItem {
+    height: 100%;
+}
+
+.currentTaskActive {
+    border: solid red 2px;
+}
+
+.singleTask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
