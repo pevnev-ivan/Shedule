@@ -5,6 +5,7 @@ type propsType = {
     colorVariants: Array<string>
     dayOfWeek: number
     startTime: number
+    colorVariantsText: Array<string>
     addTaskCallback: (taskName: string, colorVariant: string, startTime: number, dayOfWeek: number) => void
 }
 const EditableTableItem = (props: propsType) => {
@@ -26,7 +27,7 @@ const EditableTableItem = (props: propsType) => {
             </select>
 
             <select ref={colorVariant} name="colorVariants" id="colorVariants">
-                {props.colorVariants.map((el, index) => <option  value={el}> {el}</option>)}
+                {props.colorVariants.map((el, index) => <option  value={el}> {props.colorVariantsText[index]}</option>)}
             </select>
             <button onClick={onClickAddTaskHandler}>Done</button>
             <button>Exit</button>

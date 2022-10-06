@@ -14,13 +14,14 @@ export type tasksType = {
     color: {backgroundColor: string}
 }
 
-const MAIN = 'light-blue'
-const SECONDARY = 'red'
-const WARNING = 'yellow'
+const MAIN = '#e3fdd4'
+const SECONDARY = '#d3f4fe'
+const WARNING = '#fdf75b'
 
 const mainTasksClassName = {backgroundColor: 'lightBlue'}
 const taskNames = ['HTML', 'REACT', 'GYM']
-const colorVariants = [MAIN, 'Secondary', 'Warning']
+const colorVariants = [MAIN, SECONDARY, WARNING]
+const colorVariantsText = ['MAIN', 'SECONDARY', 'WARNING']
 const Table = (props: propsType) => {
     const [tasks, setTasks] = useState<Array<tasksType>>([
         {
@@ -95,6 +96,7 @@ const Table = (props: propsType) => {
                                         addTask={addTask}
                                         taskNames={taskNames}
                                         colorVariants={colorVariants}
+                                        colorVariantsText={colorVariantsText}
                                     />
 
                         ))}

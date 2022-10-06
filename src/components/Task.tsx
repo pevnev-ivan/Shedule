@@ -15,6 +15,7 @@ type DayType = {
     addTask: (taskName: string, colorVariant: string, startTime: number, dayOfWeek: number) => void
     taskNames: Array<string>
     colorVariants: Array<string>
+    colorVariantsText: Array<string>
 }
 
 
@@ -44,7 +45,12 @@ const Task = (props: DayType) => {
                 {/*<div>{'Текущий час: ' + props.currentHour}</div>*/}
                 {/*<div>{'Начало периода: ' + props.timePeriod}</div>*/}
                 {/*<div>{'Начало периода таски: ' + props.tasks[0].startTime}</div>*/}
-                {editState && <EditableTableItem taskNames={props.taskNames} colorVariants={props.colorVariants} addTaskCallback={addTaskCallback} dayOfWeek={props.dayOfWeek} startTime={props.timePeriod}/>}
+                {editState && <EditableTableItem taskNames={props.taskNames}
+                                                 colorVariants={props.colorVariants}
+                                                 addTaskCallback={addTaskCallback} dayOfWeek={props.dayOfWeek}
+                                                 startTime={props.timePeriod}
+                                                 colorVariantsText={props.colorVariantsText}/>}
+
 
                 {filteredTasks.map((el) => <div  className={styles.singleTask} style={el.color}>{el.name.toUpperCase()}</div>)}
 
