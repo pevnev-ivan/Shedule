@@ -3,7 +3,7 @@ import './App.css';
 import {getMonth} from "./util";
 import CalendarHeader from "./components/CalendarHeader";
 import Sidebar from "./components/Sidebar";
-import Month from "./components/Month";
+import Table from "./components/Table";
 
 function App() {
     const [currentMonth, setCurrentMonth] = useState(getMonth())
@@ -14,7 +14,7 @@ function App() {
                 <CalendarHeader/>
                 <div className="flex flex-1">
                     <Sidebar/>
-                    <Month currentMonth={currentMonth}/>
+                    <Table currentMonth={currentMonth}/>
                 </div>
             </div>
         </>
