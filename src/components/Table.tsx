@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {MonthType} from "../util";
 import Task from "./Task";
 import styles from './Table.module.css'
 import s from '../components/task.module.css'
+import {restoreState, saveState} from "../LocalStorage/LocalStorage";
+
 type propsType = {
     currentMonth: MonthType
+    theme: boolean
+    changeTheme: () => void
 }
 
 export type tasksType = {
@@ -14,15 +18,27 @@ export type tasksType = {
     color: {backgroundColor: string}
 }
 
-const MAIN = '#e3fdd4'
-const SECONDARY = '#d3f4fe'
-const WARNING = '#fdf75b'
 
-const mainTasksClassName = {backgroundColor: 'lightBlue'}
-const taskNames = ['HTML', 'REACT', 'GYM']
-const colorVariants = [MAIN, SECONDARY, WARNING]
-const colorVariantsText = ['MAIN', 'SECONDARY', 'WARNING']
+
+
+
+
+
 const Table = (props: propsType) => {
+
+    const taskNames = ['HTML', 'REACT', 'GYM']
+
+    const colorVariantsText = ['MAIN', 'SECONDARY', 'WARNING']
+    const timePeriods = ['09:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00', '18:00 - 21:00', '21:00 - 00:00'];
+    const timePeriodsClassname = s.timePeriods + ' ' + s.singleTask
+
+    const MAIN ='#92145d'
+    const SECONDARY = '#2dc6ff'
+    const WARNING = '#fda02e'
+
+    const colorVariants = [MAIN, SECONDARY, WARNING]
+    const mainTasksClassName = {backgroundColor: MAIN}
+
     const [tasks, setTasks] = useState<Array<tasksType>>([
         {
             name: taskNames[0],
@@ -49,22 +65,35 @@ const Table = (props: propsType) => {
             color: mainTasksClassName
         },
     ])
+    const darkModeClassname = props.theme ? styles.darkMode : ''
+    const darkModePeriods = props.theme ? styles.darkModePeriods : ''
+
+    useEffect(() => {
+        setTasks(restoreState('TasksArray', tasks))
+    }, [])
+
+    useEffect(() => {
+      saveState<Array<tasksType>>('TasksArray', tasks)
+    }, [tasks])
+
+    const clear = () => {
+        localStorage.clear()
+        setTasks(restoreState('TasksArray', tasks))
+    }
 
     const addTask = (taskName: string, colorVariant: string, startTime: number, dayOfWeek: number) => {
         let color = {backgroundColor: colorVariant}
         setTasks([...tasks, {name: taskName, dayOfWeek: dayOfWeek, startTime: startTime, color: color}])
     }
 
+    const changeTheme = () => {
+        props.changeTheme()
+    }
 
-    const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thrus', 'Fri', 'Sat'];
-    const timePeriods = ['09:00 - 12:00', '12:00 - 15:00', '15:00 - 18:00', '18:00 - 21:00', '21:00 - 00:00'];
 
-    const timePeriodsClassname = s.timePeriods + ' ' + s.singleTask
 
     const prevMonday = new Date();
     prevMonday.setDate(prevMonday.getDate() - (prevMonday.getDay() + 6) % 7);
-
-
     const year = new Date().getFullYear()
     const month = new Date().getMonth()
     let currentDay = prevMonday.getDate() - 1
@@ -77,17 +106,23 @@ const Table = (props: propsType) => {
             return new Date(year, month, currentDay)
         })
     })
-    let startHours = 8
 
-    return (<div className={styles.tableContainer}>
-            <div className=" grid grid-cols-8 grid-rows-8">
+    return (
+        <div>
+            <div className={styles.buttons}>
+            <button className={styles.button} onClick={changeTheme}> Change Theme</button>
+            <button className={styles.button} onClick={clear}>Clear Cache</button>
+            </div>
+
+            <div className={styles.tableContainer + ' ' +  darkModeClassname}>
+            <div className={"grid grid-cols-8 grid-rows-6"}>
 
 
                 {Week.map((row, index) => (
                     <React.Fragment key={index}>
                         {row.map((day, idx) => (
                             (index === 0) ? <div key={idx}> {day.getDate() + ', ' + day.toDateString().slice(0, 3).toUpperCase()}</div> :
-                                (idx === 0) ? <div className={timePeriodsClassname}>{timePeriods[index - 1]}</div> :
+                                (idx === 0) ? <div className={timePeriodsClassname + ' ' + darkModePeriods}>{timePeriods[index - 1]}</div> :
                                     <Task
                                         timePeriod={index * 3 + 6}
                                         dayOfWeek={day.getDay() === 0 ? 7 : day.getDay()}
@@ -97,13 +132,14 @@ const Table = (props: propsType) => {
                                         taskNames={taskNames}
                                         colorVariants={colorVariants}
                                         colorVariantsText={colorVariantsText}
+                                        theme={props.theme}
                                     />
 
                         ))}
                     </React.Fragment>
                 ))}
             </div>
-        </div>
+        </div></div>
     )
 };
 

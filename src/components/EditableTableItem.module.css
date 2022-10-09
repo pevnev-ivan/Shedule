@@ -1,0 +1,20 @@
+.popup {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+
+
+    width: 15vh;
+    background-color: #474957;
+    color: #e3e5ea;
+    text-align: center;
+    border-radius: 6px;
+    padding: 20px;
+
+    z-index: 1;
+
+
+
+
+}

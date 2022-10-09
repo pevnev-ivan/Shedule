@@ -1,8 +1,40 @@
+
 .tableContainer {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: auto auto;
-    /*color: #bd7d8b;*/
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #e3e5ea;
 
+    /*color: #bd7d8b;*/
 }
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e3e5ea;
+    gap: 5vh;
+    margin: 5vh;
+}
+
+.button {
+    background-color: #323441;
+    padding: 10px;
+    border: 1px solid #e3e5ea;
+    border-radius: 20px;
+}
+
+
+.darkMode {
+    background-color: #323441;
+    border: 1px solid #e3e5ea;
+    color: #e3e5ea;
+}
+
+.darkModePeriods {
+    border-color: #555555;
+}
+

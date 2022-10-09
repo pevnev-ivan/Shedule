@@ -1,9 +1,6 @@
-import React, {useState} from 'react';
-import dayjs from "dayjs";
-import {MonthType} from "../util";
+import React, {MouseEvent, useState} from 'react';
 import {tasksType} from "./Table";
 import styles from './task.module.css'
-import {logDOM} from "@testing-library/react";
 import EditableTableItem from "./editableTableItem";
 
 // type singleDayType = ReturnType<typeof >
@@ -16,11 +13,14 @@ type DayType = {
     taskNames: Array<string>
     colorVariants: Array<string>
     colorVariantsText: Array<string>
+    theme: boolean
 }
 
 
 const Task = (props: DayType) => {
     const [editState, setEditState] = useState<boolean>(false)
+    const darkModeClassname = props.theme ? styles.darkMode : ''
+
 
     const addTaskCallback = (taskName: string, colorVariant: string, startTime: number, dayOfWeek: number) => {
 
@@ -29,17 +29,20 @@ const Task = (props: DayType) => {
         setEditState(!editState)
     }
 
-    const currentTaskClassname = (props.timePeriod <= Number(props.currentHour) && Number(props.currentHour) <  props.timePeriod + 3 && props.dayOfWeek == new Date().getDay())
-        ? styles.currentTaskActive + ' ' + styles.currentTableItem : styles.currentTableItem
+    const currentTaskClassname = (props.timePeriod <= Number(props.currentHour) && Number(props.currentHour) < props.timePeriod + 3 && props.dayOfWeek == new Date().getDay())
+        ? styles.currentTaskActive + ' ' + styles.currentTableItem  : styles.currentTableItem
 
     let filteredTasks = props.tasks.filter((el) => el.dayOfWeek == props.dayOfWeek && el.startTime == props.timePeriod)
-    const changeEditStateHandler = () => {
+    const changeEditStateHandler = (e: MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        e.preventDefault()
+
         setEditState(!editState)
     }
 
 
     return (
-        <div className="border flex flex-col">
+        <div className={styles.tableItems + ' ' + darkModeClassname}>
             <div onDoubleClick={changeEditStateHandler} className={currentTaskClassname}>
                 {/*<div>{'Номер дня: ' + props.dayOfWeek}</div>*/}
                 {/*<div>{'Текущий час: ' + props.currentHour}</div>*/}
@@ -52,8 +55,8 @@ const Task = (props: DayType) => {
                                                  colorVariantsText={props.colorVariantsText}/>}
 
 
-                {filteredTasks.map((el) => <div  className={styles.singleTask} style={el.color}>{el.name.toUpperCase()}</div>)}
-
+                {filteredTasks.map((el) => <div className={styles.singleTask + ' ' + styles.darkMode}
+                                                style={el.color}>{el.name.toUpperCase()}</div>)}
 
 
             </div>

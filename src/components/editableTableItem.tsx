@@ -1,4 +1,6 @@
 import React, {MouseEventHandler, useRef} from 'react';
+import styles from './EditableTableItem.module.css'
+import s from './Table.module.css'
 
 type propsType = {
     taskNames: Array<string>
@@ -9,6 +11,7 @@ type propsType = {
     addTaskCallback: (taskName: string, colorVariant: string, startTime: number, dayOfWeek: number) => void
 }
 const EditableTableItem = (props: propsType) => {
+    const spanClassName = styles.popup
 
     const taskName = useRef<HTMLSelectElement>(null)
     const colorVariant = useRef<HTMLSelectElement>(null)
@@ -21,7 +24,7 @@ const EditableTableItem = (props: propsType) => {
 
     }
     return (
-        <>
+        <div className={spanClassName}>
             <select ref={taskName} name="taskNames" id="taskNames">
                 {props.taskNames.map((el, index) => <option  value={el}> {el}</option>)}
             </select>
@@ -29,9 +32,11 @@ const EditableTableItem = (props: propsType) => {
             <select ref={colorVariant} name="colorVariants" id="colorVariants">
                 {props.colorVariants.map((el, index) => <option  value={el}> {props.colorVariantsText[index]}</option>)}
             </select>
-            <button onClick={onClickAddTaskHandler}>Done</button>
-            <button>Exit</button>
-        </>
+            <div style={{display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'center'}}>
+            <button className={s.button} onClick={onClickAddTaskHandler}>Done</button>
+            <button className={s.button} > Exit</button>
+            </div>
+        </div>
     );
 };
 
